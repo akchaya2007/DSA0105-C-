@@ -1,0 +1,95 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Person {
+protected:
+    string name, address, phone_no;
+public:
+    void acceptPerson() {
+        cin >> name >> address >> phone_no;
+    }
+};
+
+class Employee : public Person {
+    int eno;
+    string ename;
+public:
+    void accept() {
+        cin >> eno >> ename;
+        acceptPerson();
+    }
+    void display() {
+        cout << eno << " " << ename << " " << name << " "
+             << address << " " << phone_no << endl;
+    }
+};
+
+class Manager : public Person {
+    string designation, department_name;
+    double basic_salary;
+public:
+    void accept() {
+        cin >> designation >> department_name >> basic_salary;
+        acceptPerson();
+    }
+    void display() {
+        cout << name << " " << address << " " << phone_no << " "
+             << designation << " " << department_name << " "
+             << basic_salary << endl;
+    }
+    double getSalary() {
+        return basic_salary;
+    }
+    string getName() {
+        return name;
+    }
+};
+
+int main() {
+    int n, choice;
+    cin >> n;
+
+    Employee e[10];
+    Manager m[10];
+
+    do {
+        cout << "\n1.Accept\n2.Display\n3.Highest Salary Manager\n4.Exit\n";
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            for (int i = 0; i < n; i++)
+                e[i].accept();
+            for (int i = 0; i < n; i++)
+                m[i].accept();
+            break;
+
+        case 2:
+            for (int i = 0; i < n; i++)
+                e[i].display();
+            for (int i = 0; i < n; i++)
+                m[i].display();
+            break;
+
+        case 3: {
+            int pos = 0;
+            for (int i = 1; i < n; i++)
+                if (m[i].getSalary() > m[pos].getSalary())
+                    pos = i;
+
+            cout << "Manager: " << m[pos].getName() << endl;
+            cout << "Salary: " << m[pos].getSalary();
+            break;
+        }
+
+        case 4:
+            break;
+
+        default:
+            cout << "Invalid choice";
+        }
+    } while (choice != 4);
+
+    return 0;
+}
