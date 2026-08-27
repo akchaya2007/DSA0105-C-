@@ -1,0 +1,89 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class books {
+    string author, title, publisher;
+    double price;
+    int stock;
+
+    void updatePrice(double p) {
+        price = p;
+    }
+
+public:
+    static int successful;
+    static int unsuccessful;
+
+    books(string a, string t, string p, double pr, int s) {
+        author = a;
+        title = t;
+        publisher = p;
+        price = pr;
+        stock = s;
+    }
+
+    bool search(string a, string t) {
+        return author == a && title == t;
+    }
+
+    void display() {
+        cout << "Title: " << title << endl;
+        cout << "Author: " << author << endl;
+        cout << "Publisher: " << publisher << endl;
+        cout << "Price: " << price << endl;
+        cout << "Stock: " << stock << endl;
+    }
+
+    void sell(int copies) {
+        if (copies <= stock) {
+            cout << "Total Cost: " << price * copies << endl;
+            stock -= copies;
+            successful++;
+        } else {
+            cout << "Required copies not in stock" << endl;
+            unsuccessful++;
+        }
+    }
+
+    void changePrice(double p) {
+        updatePrice(p);
+    }
+
+    static void statistics() {
+        cout << "Successful Transactions: " << successful << endl;
+        cout << "Unsuccessful Transactions: " << unsuccessful << endl;
+    }
+};
+
+int books::successful = 0;
+int books::unsuccessful = 0;
+
+int main() {
+    books b("R.K. Narayan", "Malgudi Days", "Indian Publisher", 450, 10);
+
+    string author, title;
+    int copies;
+
+    cout << "Enter author: ";
+    getline(cin, author);
+
+    cout << "Enter title: ";
+    getline(cin, title);
+
+    if (b.search(author, title)) {
+        b.display();
+
+        cout << "Enter number of copies: ";
+        cin >> copies;
+
+        b.sell(copies);
+    } else {
+        cout << "Book not available." << endl;
+        books::unsuccessful++;
+    }
+
+    books::statistics();
+
+    return 0;
+}
