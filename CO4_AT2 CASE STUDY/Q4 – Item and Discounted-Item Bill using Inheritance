@@ -1,0 +1,58 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Item {
+protected:
+    int item_no;
+    string name;
+    float price;
+public:
+    void acceptItem() {
+        cin >> item_no >> name >> price;
+    }
+};
+
+class DiscountedItem : public Item {
+    float discount_percent;
+    int quantity;
+public:
+    void accept() {
+        acceptItem();
+        cin >> quantity >> discount_percent;
+    }
+
+    float getAmount() {
+        float amount = price * quantity;
+        return amount - (amount * discount_percent / 100);
+    }
+
+    void display() {
+        cout << item_no << "\t" << name << "\t"
+             << quantity << "\t" << price << "\t"
+             << discount_percent << "\t" << getAmount() << endl;
+    }
+};
+
+int main() {
+    int n;
+    float total = 0;
+
+    cin >> n;
+
+    DiscountedItem d[20];
+
+    for (int i = 0; i < n; i++)
+        d[i].accept();
+
+    cout << "ItemNo\tName\tQty\tPrice\tDiscount\tAmount\n";
+
+    for (int i = 0; i < n; i++) {
+        d[i].display();
+        total += d[i].getAmount();
+    }
+
+    cout << "Total Amount: " << total;
+
+    return 0;
+}
